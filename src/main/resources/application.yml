@@ -1,0 +1,4 @@
+server:
+  port: 9001
+  tomcat:
+    max-threads: 1  #可以把线程数设置为1，这样能更快校验问题
