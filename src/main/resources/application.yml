@@ -1,4 +1,45 @@
 server:
   port: 9001
-  tomcat:
-    max-threads: 1  #可以把线程数设置为1，这样能更快校验问题
+  #tomcat:
+    #max-threads: 1  #可以把线程数设置为1，这样能更快校验问题
+
+clientsdk:
+  ribbon:
+    listOfServers: localhost:9001
+
+SmsClient:
+  ribbon:
+    listOfServers: localhost:9000,localhost:9001
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 1000  #此处两者都配置上才能生效，看源码FeignClientFactoryBean configureUsingProperties方法
+        readTimeout: 1000
+
+
+#验证feign和ribbon的超时参数哪个生效；结论：feign的会生效，ribbon被覆盖
+ribbon:
+  ReadTimeout: 5000
+  ConnectTimeout: 5000
+  MaxAutoRetriesNextServer: 0  #禁用服务调用失败后在下一个服务端节点的自动重试
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/test?characterEncoding=UTF-8&useSSL=false&rewriteBatchedStatements=true
+    username: root
+    password: 234567$
+    maximum-pool-size: 100
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    platform: mysql
+
+
+
+#jpa配置
